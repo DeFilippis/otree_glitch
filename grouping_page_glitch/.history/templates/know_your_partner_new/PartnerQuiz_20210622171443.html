@@ -1,0 +1,54 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+
+{% block title %}
+    Know Your Partner Quiz
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="alert alert-success" role="alert">
+    <p>You will now be required to take a short quiz confirming that you know a bit about your partner as an attention check.   You have three minutes to answer two randomly selected questions. Please answer as quickly as you can and move onto the next page. It is not necessary to use the entire alloted time.
+    </p>
+  </div>
+  
+ <div class="alert alert-primary" role="alert">
+  <p>
+  Use the chat box at the bottom of this screen to ask your partner what the correct answers are in case you forgot!  <b>Once you are done press "Next" to continue </b>. 
+    </p>
+</div>
+
+        {% formfields %}
+
+
+
+<h3>Chat with your partner</h3>
+    {% chat %}
+
+
+    {% next_button %}
+
+
+{% endblock %}
+
+
+
+
+{% block scripts %}
+
+
+
+
+{% endblock %}
+
+
+{% block styles %}
+
+
+
+
+{% endblock %}

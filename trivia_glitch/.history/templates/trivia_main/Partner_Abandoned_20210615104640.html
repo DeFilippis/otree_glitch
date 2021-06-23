@@ -1,0 +1,28 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Your Partner May Have Abandoned You
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="panel panel-default" style="margin-bottom:10px">
+        <div class="panel-body">
+            <p><strong>Next Steps</strong></p>
+            <p>
+                You are seeing this page because there is a possibility that your partner abandoned you. For two questions, your partner did not answer in time, and therefore auto-submitted "999" as their answer.
+
+                There is the possibility, however, that your partner did not leave, and the server is merely having issues preventing your partner from moving forward. As a result, we just wanted to flag that this might be an issue. If you suspect your partner did leave please contact me at defilippis@gmail.com, and I will give you the confirmation code to receive payment.
+
+                Please click next to continue.
+
+            </p>
+        </div>
+    </div>
+{% chat %}
+
+{% next_button %}
+{% endblock %}
+

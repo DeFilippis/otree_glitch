@@ -1,0 +1,44 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block content %}
+
+    <h1>Welcome to Phase 1</h1>
+    <h2>Rules of the Game</h2>
+
+    <ul>
+        <li>PLEASE NOTE: Failure to answer two questions in a row within the time limit will result in you being automatically kicked from the study.
+        <li>You and your partner will answer trivia questions together using a chat platform.
+        <li>You can only score points if you select the right answer, and you and your partner select the same agreed-upon, "joint" answer</li>
+        <li>You lose points every time you get a joint answer wrong, or if you fail to agree with your partner. Every correct answer in this round is worth ${{Constants.BONUS_VALUE_ONE}}</li>
+        <li>For every question, you will first be required to answer the question privately, without access to a chat box. Then, you will be required to chat with your partner to agree upon a single, "joint" answer.
+        <li>Please do not exit the browser or leave the game. This will invalidate the study, cause your partner to get stuck in a waiting loop, and result in forfeiture of payment.</li>
+        <li>Cheating is strictly prohibited. Multiple measures are in place to detect cheating: your results and bonus payments will be void if cheating detected.</li>
+        <li>There will be three phases of quiz questions. </li>
+        <li style="list-style-type:none">
+            <ul> 
+                <li> Phase 1 will contain {{Constants.PHASE_1_LENGTH}} questions.</li>
+                <li> Phase 2 will contain {{Constants.PHASE_2_LENGTH}} questions. </li>
+                <li> Phase 3 will contain {{Constants.PHASE_3_LENGTH}} questions. </li>
+            </ul>
+        </li>
+        <li>Good luck!</li> 
+    </ul>
+
+    <button name="phase1_start" class="btn btn-lg btn-block btn-info">Let's Play!</button>
+
+    {% chat %}
+
+{% endblock %}
+
+
+{% block styles %}
+
+<style>
+
+    h1, h2 {
+        text-align: center
+    }
+</style>
+{% endblock %}

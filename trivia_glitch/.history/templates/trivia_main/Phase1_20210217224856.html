@@ -1,0 +1,60 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block content %}
+
+
+<h1>Welcome to Quiz 1</h1>
+<h2>Rules of the Game</h2>
+
+    <ul>
+        <li>You and your partner will answer trivia questions together using a chat platform.  <b>You can only score points if you get the right answer, and you and your partner select the same agreed-upon, "joint" answer.</b></li>
+        <li>You lose points every time you get a joint answer wrong, or if you fail to agree with your partner. Every correct answer is worth ${{bonus_value_one}}</li>
+        <li>You will first be asked to answer the question without the assistance of your partner before being allowed to communicate with your partner to decide upon a shared "joint" answer. 
+        <li>Please do not exit the browser or leave the game.  This will invalidate the entire survey, force your partner to get stuck in waiting loops, and result in forfeiture of payment.</li>
+        <li>Cheating is strictly prohibited.  Multiple measures are in place to detect cheating; your results and bonus payments will be void if detected.</li>
+        <li>There will be three phases of quizzes.  Phase 1 will contain {{len_q1}} questions.  Phase 2 will contain {{len_q2}} questions.  Phase 3 will contain {{len_q3}} questions.</li>
+        <li>After each question, you will be asked to record how confident you are in your private and your joint answers</li> 
+        <li> Should your partner leave for some unexpected reason, you will be completely compensated for your participation.  
+        <li>Good luck!</li> 
+    </ul>
+    
+<button name="phase1_start" class="btn btn-lg btn-block btn-info">Let's Play!</button>
+
+
+{% chat %}
+
+{% endblock %}
+
+
+{% block styles %}
+
+<style>
+
+
+ul.list-group:after {
+  clear: both;
+  display: block;
+  content: "";
+  font-size:50px;
+
+}
+
+.list-group-item {
+    float: left;
+    border: 0 !important;
+    margin: 0px;
+    padding: 10px 0px;
+    font-size:50px;
+}
+
+a {
+  display: block;
+  padding: 5px;
+  border: 1px solid pink;
+}
+
+
+</style>
+{% endblock %}

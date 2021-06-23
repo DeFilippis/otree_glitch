@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Thank you!  The completion code is: {{completion_code}}
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="panel panel-default" style="margin-bottom:10px">
+        <div class="panel-body">
+            <p><strong>Next Steps</strong></p>
+            <p>The experiment is over! Unfortunately, you were not able to be paired with another participant in the time alloted. You must enter the following completion code to be compensated: {{completion_code}}, and should 
+                receive payment within a few hours. Thank you for your participation!
+            </p>
+        </div>
+    </div>
+
+
+    
+
+
+{% endblock %}
+

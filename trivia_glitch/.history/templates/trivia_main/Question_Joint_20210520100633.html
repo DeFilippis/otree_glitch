@@ -1,0 +1,158 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+        Question {{ player.round_number }} of {{ Constants.num_rounds }}: Joint Answer
+        <button type="button" class="btn btn-danger" style = "float: right" data-toggle="modal" data-target="#exampleModalCenter">
+            Instructions
+        </button>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Rules for Trivia Game</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            - PLEASE NOTE: Failure to answer two questions in a row within the time limit will result in you being automatically kicked from the study.
+            - You and your partner will answer trivia questions together using a chat platform. <br>
+            - You can only score points if you select the right answer, and you and your partner select the same agreed-upon, "joint" answer. <br>
+            - You lose points every time you get a joint answer wrong, or if you fail to agree with your partner. <br>
+            - Every correct answer in Phase 1 and Phase 2 is worth ${{Constants.BONUS_VALUE_ONE}}, while questions in Phase 3 will be worth ${{Constants.BONUS_VALUE_TWO}}<br>
+            - For every question, you will first be required to answer the question privately, without access to a chat box. Then, you will be required to chat with your partner to agree upon a single, "joint" answer. <br>
+            - Please do not exit the browser or leave the game. This will invalidate the study, cause your partner to get stuck in a waiting loop, and result in forfeiture of payment. <br>
+            - Cheating is strictly prohibited. Multiple measures are in place to detect cheating: your results and bonus payments will be void if cheating detected. <br>
+            - There will be three phases of quiz questions. <br>
+            - Phase 1 will contain {{Constants.PHASE_1_LENGTH}} questions. <br>
+            - Phase 2 will contain {{Constants.PHASE_2_LENGTH}} questions. <br>
+            - Phase 3 will contain {{Constants.PHASE_3_LENGTH}} questions. <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="alert alert-success"> Now you and your partner should communicate with one another to decide on which answer you will submit together.  Use the chat box below to discuss.  Remember that you must submit the same answer
+    in order to earn money.   </div>
+
+  
+    {% formfield player.submitted_answer_joint label=question_content %}
+    {% formfield player.confidence_joint %}
+        
+
+    <h2> Chat with Partner </h2>
+    
+    {% chat %}
+
+    <button name="get_values" value=counter_joint onclick="get_value()" class="btn btn-primary btn-large">Next</button>
+    <input type="hidden" class = "blur_count_joint" id = "blur_count_joint" name = "blur_count_joint" value = 0> 
+    <input type="hidden" class = "chat_content_joint" id = "chat_content_joint" name="chat_content_joint" value = "No Chat">
+    <input type="hidden" class = "my_chat_joint" id = "my_chat_joint" name="my_chat_joint" value = "No Chat">
+    <input type="hidden" class = "idle_joint" id = "idle_joint" name="idle_joint" value = 0>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/ifvisible.js' %}"></script>
+
+<script>
+    var counter_joint  = 0;
+    var idle_joint  = 0;
+    var finalText = "";
+    var myChat = "";
+
+    // Create local storage for blur counter_joint and idle
+    if (localStorage.getItem("counter_joint") === null) {
+        var counter_joint  = 0;
+    }
+    else{
+        var counter_joint = JSON.parse(localStorage.getItem('counter_joint'));
+    }
+
+    if (localStorage.getItem("idle_joint") === null) {
+        var idle_joint  = 0;
+    }
+    else{
+        var idle_joint = JSON.parse(localStorage.getItem('idle_joint'));
+    }
+
+    ifvisible.setIdleDuration(15); // Page will become idle after 15 seconds
+
+    ifvisible.idle(function(){
+        idle_joint++;
+        localStorage.setItem('idle', JSON.stringify(idle_joint));
+
+        console.log("Page is going idle. Total number of idles:")
+        console.log(idle_joint);
+        
+    });
+
+    ifvisible.on("focus", function(){
+        //Tracks total number of times window loses focus
+        counter_joint++;
+        //console.log(counter_joint);
+        console.log(counter_joint + " Blur detected")
+        localStorage.setItem('counter_joint', JSON.stringify(counter_joint));
+    });
+
+    $(document).ready(function(){
+        //$('.otree-chat__input').addClass('form-control').attr("placeholder", "Chat with your Partner Here");
+        $('.otree-chat__input').attr("placeholder", "Chat with your Partner Here");
+        //$('.otree-chat__btn-send').addClass('btn btn-primary');  
+    });
+
+    function get_value() {
+        //gets the hidden value blur_count and sets its value
+        $(".blur_count_joint").val(counter_joint);
+        $(".idle_joint").val(idle_joint);
+
+        console.log("final blur value is ", counter_joint);
+        console.log("final idle value is ", idle_joint);
+
+        //gets content of chat messages
+        $(".otree-chat__msg").each(function(){
+                var username = $(this).find('.otree-chat__nickname').text();
+                var body = $(this).find('.otree-chat__body').text();
+                finalText = finalText.concat(username, ": ", body, "\r\n");
+                
+                if(username.includes('(Me)')) {
+                        myChat = myChat.concat(body, "\r\n");
+                }
+        });
+        
+        if(finalText.length > 0) $('.chat_content_joint').val(finalText);
+        if(myChat.length > 0) $('.my_chat_joint').val(myChat);
+
+        console.log(myChat)
+        console.log(finalText)
+
+        localStorage.clear(); // resets local storage
+    }
+
+    </script>
+
+   <style>
+        /* .otree-chat__btn-send{
+            margin-top: 10px ;
+            color: white;
+        }
+        .otree-chat__input{
+            width: 100%;
+        }
+        .otree-chat{
+            width: 100%;
+        } */
+
+   </style>
+
+{% endblock %}

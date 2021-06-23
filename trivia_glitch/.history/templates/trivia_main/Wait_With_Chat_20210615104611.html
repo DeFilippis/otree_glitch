@@ -1,0 +1,15 @@
+{% extends 'otree/WaitPage.html' %}
+{% load otree %}
+{% block title %} Please wait on your partner {% endblock %}
+{% block content %}
+
+    <p>
+        Please wait while your partner submits their answer. Feel free to chat in the meantime. This should usually not take more than 2 minutes, so please regularly refresh the webpage. If you see this wait page for more than 5 minutes, please contact the project manager at defilippis@gmail.com. It is likely that your partner has exited the experiment. In the meantime, feel free to chat with your partner while they complete the previous page.
+    </p>
+
+
+
+    <h2> Chat with Partner </h2>
+    {% chat %}
+
+{% endblock %}

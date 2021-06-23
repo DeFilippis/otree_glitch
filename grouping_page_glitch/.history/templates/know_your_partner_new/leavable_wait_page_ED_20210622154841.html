@@ -1,0 +1,93 @@
+{% extends 'otree/WaitPage.html' %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Please wait
+{% endblock %}
+
+{% block styles %}
+    <style>
+   
+        #left_to_wait {
+            font-weight: bold;
+        }
+        #otree-timer__time-left {
+            font-weight: bold;
+        }
+        #leave_study {
+            margin-bottom: 1em;
+            display: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+     We are currently waiting on <b> 1 </b> other participant to complete their intake form.  
+    </p>
+    
+        
+    <div id="otree-timeout-warning">
+        <p>
+            You can finish the study if nobody arrives in: <span id="otree-timer__time-left"></span>
+        </p>
+    </div>
+
+
+    <div class="alert alert-success">
+        {{leavable_wait_page_success|safe}}
+    </div> 
+                          
+    <div class="alert alert-warning">
+        {{leavable_wait_page_warning|safe}}
+    </div>
+
+    {{time_of_end}}
+    {{time_of_arrival}}
+{% endblock %}
+
+var endTime = "{{time_of_end}}";
+var now = "{{time_of_arrival}}";
+
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'leavable_wait_page/jquery.countdown.min.js' %}"></script>
+<script type="text/javascript">
+    var endTime = "{{time_of_end}}";
+
+    $('span#otree-timer__time-left')
+        .countdown("June 23 2021", function(event) {
+        $(this).text(
+        //event.strftime('%H:%M:%S')
+        event.strftime('%-D day%!D %H:%M:%S');
+        );
+    });
+
+    //     /* leave study countdown */
+    // var endTime = "{{time_of_end}}";
+    // $('span#otree-timer__time-left')
+    //     .countdown(endTime, function(event) {
+    //     .on('update.countdown', function (event) {
+    //         // %-N is "Total count of minutes till the end, non-padded"
+    //         // %S is seconds left
+    //         var format = '%-N:%S';
+    //         var remainingTime = event.strftime(format);
+    //         $(this).html(remainingTime);
+
+    //         if (event.strftime('%-M') > 30) {
+    //             // Do not show if max waiting time is above 30 minutes
+    //             $('div#otree-timeout-warning').filter(":visible").hide(duration = 0);
+    //         } 
+
+    //     })
+    //     .on('finish.countdown', function (event) {
+    //         $('div#otree-timeout-warning').hide(duration = 0);
+    //         $('#leave_study').show();
+    //     });
+</script>
+{% endblock %}
+
+
+
+

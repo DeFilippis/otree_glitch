@@ -1,0 +1,28 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Integrity Statement
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Please Read the Following Carefully</h4>
+        <p class="card-text"> We ask that you please not cheat in this game by looking up answers to the questions online. The integrity of this entire research project depends on having valid responses.
+        Please note that participants who we identify as having cheated will not be eligible for payment. 
+
+        <div class="alert alert-danger" role="alert">
+            <i>  {{ form.cheat_consent }}
+                    I affirm that I will not cheat and acknowledge that doing so will result in withholding of payment   
+            
+            </i>
+        </div>
+    </div>
+</div>
+
+
+{% next_button %}
+{% endblock %}
+

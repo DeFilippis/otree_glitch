@@ -1,0 +1,47 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Your Partner's Results
+{% endblock %}
+
+{% block content %}
+
+partner_pair_sound
+
+    <audio autoplay>
+        <source src="https://media1.vocaroo.com/mp3/1nT1VFn1jLXu" type="audio/mpeg">
+    </audio>
+
+    <div class="alert alert-success" role="alert">
+        <p>
+            Congratulations!  You have been paired up with a partner.  You may use the chatbox below to begin communicating with your partner. 
+        </p>
+    </div>
+    
+    <div class="alert alert-primary" role="alert">
+        <p>
+            Below you will find your partner's answers to the intake form questions.  Please take no more than 3 minutes to familiarize yourself with your partner's results.  It is important to do your best to memorize this information, as you will be quizzed on a few of these items later. 
+            Once you have memorized the information, <b>press "Next" to move to the next page</b>
+        </p>
+    </div>
+
+            <h3> Partner's Responses </h3>
+            <table class="table">
+                {% for key, values in data.items %}
+                <tr>
+                    <td> 
+                        {{values|safe}} 
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+    {% chat %}
+
+
+    {% next_button %}
+{% endblock %}
+
+

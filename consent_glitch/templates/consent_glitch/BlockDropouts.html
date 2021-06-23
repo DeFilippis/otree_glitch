@@ -1,0 +1,21 @@
+{% extends 'global/Page.html' %}
+{% load otree %}
+
+{% block title %}
+    End of Study
+{% endblock %}
+
+{% block content %}
+
+    <p>Unfortunately you exceeded the maximum amount of time we allow participants to idle on the Consent Form. 
+        It's important in our study that participants begin as soon as possible to avoid forcing other participants to wait.</p>
+    <p>That means that you were dropped out of this study.</p>
+    <div class="alert alert-danger">
+        Please, <strong>return this HIT!</strong>
+    </div>
+    <p> If you have any issues regarding the study, please contact us at
+    <a href="mailto:defilippis@gmail.com">defilippis@gmail.com</a>.
+
+{% endblock %}
+
+

@@ -1,0 +1,12 @@
+{% extends "otree/Page.html" %}
+{% load otree static %}
+
+
+{% block body_main %}
+    {% block progress %}
+        {% if view.progress|default_if_none:True %}
+            {% include 'global/includes/progress.html' %}
+        {% endif %}
+    {% endblock %}
+    {{ block.super }}
+{% endblock %}

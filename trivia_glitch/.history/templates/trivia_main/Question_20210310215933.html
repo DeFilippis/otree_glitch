@@ -1,0 +1,169 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+
+{% block title %}
+        Question {{ player.round_number }} of {{ Constants.num_rounds }}: Joint Answer
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+    <b><div class="topcorner">Your Group Score: {{total_score}} = {{total_payout}} bonus payout</div></b>
+
+<div class="alert alert-success"> Now you and your partner should communicate with one another to decide on which answer you will submit together.  Use the chat box below to discuss.  Remember that you must submit the same answer
+in order to earn money. </div>
+
+
+
+<div style="display: inline-block;margin-right:50px;">
+<b>What answer do you jointly agree on?</b>
+
+
+  {% formfield player.submitted_answer label=question_content %}
+  {% formfield player.confidence label="How confident are you in your JOINT answer?" %}
+  
+  
+</div>
+
+
+
+    <h3> Chat with Your Partner </h3>
+    {% chat %}
+
+    <button name="blur_button" value=counter onclick="get_value()" class="btn btn-primary btn-large">Next</button>
+    
+    <input type="hidden" name="blur_quantity" value=counter id="id_blur_quantity"/>
+    <input type="hidden" name="chat_question" value =blank id="id_chat_question"/>
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+    <script>
+    
+        var counter  = 0;
+        var finalText = "";
+
+        //TO DO: add progress bar
+
+       // Tracks window blurs
+       $( document ).ready(function() {
+          function onchange (evt) {
+            counter++;
+          }
+
+          window.onblur = onchange;
+
+        });  
+
+        function get_value() {
+            //gets the hidden value blur_quantity and sets its value
+            document.getElementById('id_blur_quantity').value = counter;
+            console.log("final blur value is ", counter);
+            
+            //gets content of chat messages
+            $(".otree-chat__msg").each(function(){
+                	var username = $(this).find('.otree-chat__nickname').text();
+                	//console.log(username);
+                
+                	var body = $(this).find('.otree-chat__body').text();
+                	//console.log(body);
+                	finalText = finalText.concat(username, ": ", body, "\r\n");
+            });
+
+            console.log(finalText);
+            if (finalText.length > 0){
+                    
+                document.getElementById('id_chat_question').value = finalText;
+                console.log("chat transcript is blank")
+                    
+            }
+            else{
+                    document.getElementById('id_chat_question').value = "No Chat";
+                    console.log("Final text is", finalText)
+            }
+            
+
+            return true;
+        }
+
+  
+        $(function () {
+            $('#mymodal').modal('show');
+        })
+
+        $('input[type=range]').addClass('myclass');
+
+  
+
+</script>
+{% endblock %}
+
+{% block styles %}
+
+<style>
+    .myclass::-webkit-slider-thumb {
+        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        border: 1px solid #000000;
+        height: 36px !important;
+        width: 20px !important;
+        border-radius: 3px !important;
+        background: #ffffff !important;
+        cursor: pointer !important !important;
+        -webkit-appearance: none !important;
+        margin-top: -14px !important;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        margin: 18px 0;
+        width: 100%;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 8.4px;
+        cursor: pointer;
+        animate: 0.2s;
+        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        background: #d4edda;
+        border-radius: 1.3px;
+        border: 0.2px solid #010101;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        border: 0px;
+        height: 0px;
+        width: 0px;
+        border-radius: 0px;
+        -webkit-appearance: none;
+    }
+      
+     .topcorner{
+       position:absolute;
+       top:0;
+       right:0;
+       font-size: 20px;
+
+      }
+
+
+
+</style>
+
+{% endblock %}
+

@@ -1,0 +1,235 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+        Question {{ player.round_number }} of {{ Constants.num_rounds }}: Private Answer
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="pop-div">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#instructionsModal">
+        Instructions
+    </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style = "width:100%;max-width:900px " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="instructions">Rules for Round 1</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-primary" role="alert">
+                    <b>Overview: You and your partner are a team. You each get six letter tiles on each round. Spell the highest-valued word that you can, drawing on both set of tiles. Please note: You must use the chatbox. Participants who do not send at least one message per round will be kicked.</b> 
+                </div>
+
+                <p>
+                    <ul>
+                        <li>
+                            In Stage 1, there are 5 rounds. Each round is 4 minutes and 45 seconds. 
+                        </li>
+                        
+                        <li>
+                            You and your partner each get six letter tiles. 
+                        </li>
+
+                        <li>
+                            Together, you must enter the highest valued word that you can. Just like in Scrabble, a word’s value is the sum of the numbers on the tiles.
+                        </li>
+
+
+                        <li>
+                            You can’t see your partner’s tiles, so use the chatbox to communicate.
+                        </li>
+                        
+                        <li>
+                            Both you and your partner can enter words. It doesn’t matter who enters a word.
+                        </li>
+                        
+                        <li> 
+                            You can submit as many words as like, but your score for each round is determined ONLY by the highest-valued word you submit. So, try to find the best word!
+                        </li>
+                        
+                        <li> 
+                            Be careful! If you submit a word that’s not in the game dictionary or not spelled using tiles that you have (at least one tile from each player) you will lose a point.
+                        </li>
+                        
+                        <li> 
+                            If you don’t like your tiles and want to move on to the next round, you can advance if you and partner BOTH hit the “finish round” button.
+                        </li>
+                        
+                        <li>
+                            Your running total score in the top right. 
+                        </li>
+                        
+                        <li>
+                            At the end of the game, your total score will be divided by 100 and paid out to you in dollars. Your partner will get the same payment.
+                        </li>
+                    </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="alert alert-success">
+    You must first answer the question without the assistance of your partner.  Please register your private answers now.
+</div>
+
+<div class="score">
+    Your Group Score: {{total_score}} = {{total_payout}} bonus payout
+</div>
+
+<div style="display: inline-block">
+    <b>What do you personally think the answer is?</b>
+
+    {% formfield player.submitted_answer_private label=question_content %}
+    {% formfield player.confidence_private %}
+    
+    {#{% formfield player.importance label="How much do you care about what the answer to this question actually is?" %}#}
+</div>
+ 
+<br>
+    <button name="blur_button" value=counter onclick="get_value()" class="btn btn-primary btn-large">Next</button>
+    <input type="hidden" name="blur_quantity" value=counter id="id_blur_quantity"/>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+    
+        var counter  = 0;
+        var finalText = "";
+
+        //TO DO: add progress bar
+
+       // Tracks window blurs
+       $( document ).ready(function() {
+          function onchange (evt) {
+            counter++;
+          }
+
+          window.onblur = onchange;
+
+        });  
+
+        function get_value() {
+            //gets the hidden value blur_quantity and sets its value
+            document.getElementById('id_blur_quantity').value = counter;
+            console.log("final blur value is ", counter);
+            
+            //gets content of chat messages
+            $(".otree-chat__msg").each(function(){
+                	var username = $(this).find('.otree-chat__nickname').text();
+                	//console.log(username);
+                
+                	var body = $(this).find('.otree-chat__body').text();
+                	//console.log(body);
+                	finalText = finalText.concat(username, ": ", body, "\r\n");
+            });
+
+            console.log(finalText);
+            if (finalText.length > 0){
+                    
+                document.getElementById('id_chat_question').value = finalText;
+                console.log("chat transcript is blank")
+                    
+            }
+            else{
+                    document.getElementById('id_chat_question').value = "No Chat";
+                    console.log("Final text is", finalText)
+            }
+            
+
+            return true;
+        }
+
+  
+        $(function () {
+            $('#mymodal').modal('show');
+        })
+
+        $('input[type=range]').addClass('myclass');
+
+  
+
+</script>
+{% endblock %}
+
+{% block styles %}
+
+<style>
+    .myclass::-webkit-slider-thumb {
+        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        border: 1px solid #000000;
+        height: 36px !important;
+        width: 20px !important;
+        border-radius: 3px !important;
+        background: #ffffff !important;
+        cursor: pointer !important !important;
+        -webkit-appearance: none !important;
+        margin-top: -14px !important;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        margin: 18px 0;
+        width: 100%;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 8.4px;
+        cursor: pointer;
+        animate: 0.2s;
+        box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+        background: #d4edda;
+        border-radius: 1.3px;
+        border: 0.2px solid #010101;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        border: 0px;
+        height: 0px;
+        width: 0px;
+        border-radius: 0px;
+        -webkit-appearance: none;
+    }
+      
+     .topcorner{
+       position:absolute;
+       top:0;
+       right:0;
+       font-size: 20px;
+    }
+
+    .pop-div {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: large;
+    }
+
+
+
+</style>
+
+{% endblock %}
+

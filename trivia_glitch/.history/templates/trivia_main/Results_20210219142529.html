@@ -1,0 +1,162 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+    {% block title %}
+    
+        {% if consensus is False %} 
+            <div class="alert alert-danger" role="alert">
+                <strong> Warning!</strong> You and your partner did not select the same "joint answer."  Therefore, your answer will be coded as "incorrect."
+            </div>
+        {% endif %}
+        
+        Your joint answer was {% if score_points %} <font color=#5CB85C>CORRECT! </font> {% else %} <font color=#d9534f> INCORRECT </font> {% endif %}
+    {% endblock %}
+    
+
+
+{% block content %}
+
+
+    <h3 id = "current-score">
+        Current Score
+    </h3>
+
+    Your current score is: {{total_score}}, which corresponds to a total payout of: ${{total_payout}}
+
+
+    <h3 id="performance"><div>Your Results: </div></h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Correct Answer</th>
+          <th scope="col">Your Answer</th>
+          <th scope="col">Your Confidence</th>
+          <th scope="col">Your Partner's Answer</th>
+          <th scope="col">Your Partner's Confidence</th>
+          <th scope="col">Points Awarded</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{solution}}</th>
+          <td>{{player.submitted_answer_joint}}</td>
+          <td>{{player.confidence_joint}}%</td>
+          <td>{{player.partner.submitted_answer_joint}}</td>
+          <td>{{player.partner.confidence_joint}}%</td>
+          <td>{% if score_points %} <font color=#5CB85C> +1 </font> {% else %} <font color=#d9534f> -1 </font> {% endif %}</td>
+        </tr>
+        
+       
+        </tbody>
+        </table>
+        
+        
+        
+   <h3 id="question"><div>The Question: </div></h2>
+
+   {{ group.question_text }}
+
+   {% for choice in choices %}
+
+   <div class={% if choice == group.question_solution  %} "green" {% else %} "red" {% endif %}>
+       <input type="radio" disabled/> {{choice}}</label>
+   </div>
+   
+   {% endfor  %}
+
+    <p><p>    
+     
+
+<button name="next_button" value=finalText onclick="get_value()" class="btn btn-primary btn-large">Next</button>
+
+
+<h2> Chat with Partner </h2>
+    {% chat %}
+    
+
+ <input type="hidden" name="chat_results" value="" id="id_chat_results"/>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    
+        $(document).ready(function(){
+            $('.otree-chat__input').addClass('form-control').attr("placeholder", "Chat with your Partner Here");
+            $('.otree-chat__btn-send').addClass('btn btn-primary');  
+        });
+
+        var finalText = "";
+        
+        function get_value() {
+    
+            //gets content of chat messages
+            $(".otree-chat__msg").each(function(){
+                	var username = $(this).find('.otree-chat__nickname').text();
+                	//console.log(username);
+                
+                	var body = $(this).find('.otree-chat__body').text();
+                	//console.log(body);
+                	finalText = finalText.concat(username, ": ", body, "\r\n");
+            });
+
+            console.log(finalText);
+
+            
+            if (finalText.length > 0){
+                console.log(finalText);
+                    
+                document.getElementById('id_chat_results').value = finalText;
+                    
+            }
+            else{
+                console.log(finalText);
+                document.getElementById('id_chat_results').value = "No Chat";
+            }
+            
+            //console.log(document.getElementById('id_chat_transcript').value);
+            
+            //console.log(document.getElementById('id_chat_transcript').value);
+
+            return true;
+        }
+
+ 
+
+</script>
+{% endblock %}
+
+
+
+
+{% block styles %}
+
+<style>
+
+    .otree-chat__btn-send{
+        margin-top: 10px ;
+        color: white;
+    }
+        
+    .topcorner{
+    position:absolute;
+    top:0;
+    right:0;
+    font-size: 20px;
+    }
+
+
+    .green {
+    color: #5CB85C; 
+    }
+
+    .red {
+    color: #d9534f; 
+    }
+
+</style>
+
+{% endblock %}
+

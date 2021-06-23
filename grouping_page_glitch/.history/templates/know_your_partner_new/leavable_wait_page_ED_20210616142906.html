@@ -1,0 +1,123 @@
+{% extends 'otree/WaitPage.html' %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Please wait
+{% endblock %}
+
+{% block styles %}
+    <style>
+
+        @import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,900,700italic,700,600italic,600,400italic);
+
+        /* body {
+        font-family: 'Titillium Web', cursive;
+        width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        color: white;
+        background: #222;
+        font-weight: 100;
+        }
+
+        div {
+        display: inline-block;
+        line-height: 1;
+        padding: 20px;
+        font-size: 40px;
+        } */
+
+        span {
+        display: block;
+        font-size: 20px;
+        color: white;
+        }
+
+        #days {
+        font-size: 100px;
+        color: #db4844;
+        }
+        #hours {
+        font-size: 100px;
+        color: #f07c22;
+        }
+        #minutes {
+        font-size: 100px;
+        color: #f6da74;
+        }
+        #seconds {
+        font-size: 50px;
+        color: #abcd58;
+        }
+
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+     We are currently waiting on <b> 1 </b> other participant to complete their intake form.  
+    </p>
+    
+        
+    <div id="otree-timeout-warning">
+        <p>
+            You can finish the study if nobody arrives in: <span id="otree-timer__time-left"></span>
+        </p>
+    </div>
+
+
+    <div class="alert alert-success">
+        {{leavable_wait_page_success|safe}}
+    </div> 
+                          
+    <div class="alert alert-warning">
+        {{leavable_wait_page_warning|safe}}
+    </div>
+
+    <div id="timer">
+        <div id="days"></div>
+        <div id="hours"></div>
+        <div id="minutes"></div>
+        <div id="seconds"></div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        function makeTimer() {
+
+        //		var endTime = new Date("29 April 2018 9:56:00 GMT+01:00");	
+                //var endTime = new Date("29 April 2020 9:56:00 GMT+01:00");			
+                //endTime = (Date.parse(endTime) / 1000);
+                endTime = {{time_of_end}}
+                now = {{time_of_arrival}}
+                // var now = new Date();
+                // now = (Date.parse(now) / 1000);
+
+                var timeLeft = endTime - now;
+
+                var days = Math.floor(timeLeft / 86400); 
+                var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+                var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600 )) / 60);
+                var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+                if (hours < "10") { hours = "0" + hours; }
+                if (minutes < "10") { minutes = "0" + minutes; }
+                if (seconds < "10") { seconds = "0" + seconds; }
+
+                $("#days").html(days + "<span>Days</span>");
+                $("#hours").html(hours + "<span>Hours</span>");
+                $("#minutes").html(minutes + "<span>Minutes</span>");
+                $("#seconds").html(seconds + "<span>Seconds</span>");		
+
+        }
+
+        setInterval(function() { makeTimer(); }, 1000);
+    </script>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,37 @@
+
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block content %}
+
+<h1>Welcome to Phase 3</h1>
+<h2>Rules of the Game</h2>
+
+    <ul>
+        <li>Read this quickly. DO NOT let this page time out, as doing so can result in you and your partner getting stuck in a wait page. Press Next before the timer runs out</li>
+        <li>PLEASE NOTE: Failure to answer two questions in a row within the time limit will result in you being automatically kicked from the study.
+        <li> You have entered the third and final phase of the game. You will now be asked to answer {{Constants.PHASE_3_LENGTH}} trivia questions. These questions are now worth ${{Constants.BONUS_VALUE_TWO}} each, and will be substantially harder than the first round.
+        <li> Please make sure you are registering your confidence in each answer as accurately as possible.</li>
+    </ul>
+
+        <br>
+
+    <div class="alert alert-info" role="alert">
+        PLEASE READ: None of the questions in Phase 3 are "trick" questions -- the answers are supported by verifiable facts from numerous sources. There is no deception involved in this study.
+    </div>
+
+    <button name="phase3_start" class="btn btn-lg btn-block btn-info">Let's Play!</button>
+
+    {% chat %}
+
+{% endblock %}
+
+
+{% block styles %}
+<style>
+
+    h1, h2 {
+        text-align: center
+    }
+</style>
+{% endblock %}

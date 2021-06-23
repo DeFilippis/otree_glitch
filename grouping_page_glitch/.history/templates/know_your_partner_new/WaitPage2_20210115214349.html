@@ -1,0 +1,25 @@
+{% extends 'otree/WaitPage.html' %}
+{% load staticfiles otree %}
+{% block title %}{{ title_text }}{% endblock %}
+
+{% block content %}
+    {{ body_text }}
+    <p>
+    
+        You are waiting for another mTurker to review the results of the Know Your Partner Phase.  You may continue chatting with them below while you wait
+        
+    </p>
+    
+    
+    <h3>Chat with your partner</h3>
+    {% chat %}
+    
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
